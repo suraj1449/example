@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: merged-market-dashboard
+    runtime: python
+    plan: starter
+    region: singapore
+    autoDeployTrigger: commit
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn -k gthread --workers 1 --threads 8 --bind 0.0.0.0:$PORT MERGED_DASHBOARD:app
+    healthCheckPath: /healthz
+    envVars:
+      - key: KITE_API_KEY
+        sync: false
+      - key: KITE_ACCESS_TOKEN
+        sync: false
